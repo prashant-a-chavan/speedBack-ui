@@ -1,70 +1,74 @@
-# Getting Started with Create React App
+# SpeedBack Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+SpeedBack is a platform designed to simplify the process of scheduling feedback sessions within teams. It provides a clear, real-time overview of team members' availability and allows for quick and conflict-free bookings.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## 🌟 Key Features
 
-### `npm start`
+- **Real-Time Dashboard**: A live, shared view of all feedback slots that updates instantly for all users using WebSockets.
+- **Conflict-Free Booking**: The system intelligently prevents double-bookings, ensuring a person cannot be a booker and a bookie in the same slot.
+- **Interactive UI**: A modern, professional user interface built with React and TypeScript.
+- **API Documentation**: Comes with a live, interactive Swagger UI for exploring and testing the backend API.
+- **Persistent Data**: Uses a PostgreSQL database with Flyway for version-controlled schema migrations.
+- **Professional Tooling**: Integrated with code formatters (Spotless for Java, Prettier for frontend) and linters (ESLint) to maintain high code quality.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Tech Stack
 
-### `npm test`
+The project is built with a modern, robust, and scalable technology stack.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| Area         | Technology                                                                                   |
+| :----------- | :------------------------------------------------------------------------------------------- |
+| **Backend**  | **Spring Boot 3** (Java 25), Spring Data JPA, Spring WebSockets, Flyway, Swagger, PostgreSQL |
+| **Frontend** | **React 18** (TypeScript), React Router, Axios, Prettier, ESLint, Yarn/NPM                   |
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 🚀 Getting Started
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Follow these instructions to get a local copy of the project up and running for development and testing purposes.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+You will need the following software installed on your machine:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Gradle** (only needed once to generate wrapper if missing)
+- **Node.js 18** or later
+- **Yarn** or **NPM**
+- **PostgreSQL 14** or later
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Frontend Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1.  **Navigate to the frontend directory:**
+    Open a **new terminal window** and navigate to the frontend folder.
 
-## Learn More
+    ```bash
+    cd frontend
+    ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2.  **Install Dependencies:**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    ```bash
+    yarn install
+    # or: npm install
+    ```
 
-### Code Splitting
+3.  **Run the Frontend:**
+    ```bash
+    yarn start
+    # or: npm start
+    ```
+    The frontend development server will start and open a browser window at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+## ⚙️ Available Scripts & Commands
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- **`yarn start`**: Runs the app in development mode.
+- **`yarn build`**: Builds the app for production.
+- **`yarn validate`**: Checks both code formatting (Prettier) and code quality (ESLint).
+- **`yarn fix`**: Automatically fixes all formatting and linting issues.
