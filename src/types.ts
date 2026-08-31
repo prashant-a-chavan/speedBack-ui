@@ -21,3 +21,17 @@ export interface FeatureFlag {
   name: string;
   active: boolean;
 }
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface AuthSession {
+  accessToken: string;
+  tokenType: string;
+  expiresInSeconds: number;
+  memberId: number;
+  name: string;
+  username: string;
+}

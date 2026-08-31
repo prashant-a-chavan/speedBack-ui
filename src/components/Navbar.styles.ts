@@ -33,3 +33,15 @@ export const StyledNavLink = styled(NavLink)(() => ({
     transition: 'color 0.6s, fontWeight 0.6s',
   },
 }));
+
+export const NavbarRight = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.75rem',
+}));
+
+export const NavLinks = styled('div')(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '0.5rem',
+}));

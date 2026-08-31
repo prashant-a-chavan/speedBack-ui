@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { useSpeedback } from './hooks/useSpeedback.ts';
 import { Modal } from './components/Modal.tsx';
 import { Navbar } from './components/Navbar.tsx';
+import { RequireAuth } from './components/RequireAuth.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
 import { AboutPage } from './pages/AboutPage.tsx';
+import { LoginPage } from './pages/LoginPage.tsx';
 import { AppContainer } from './App.styles.ts';
 import { FeatureFlagsProvider } from './context/FeatureFlagsContext';
 import { getFeatureFlags } from './services/configService';
 
-export const App: React.FC = () => {
+const ProtectedApp: React.FC = () => {
   const {
     teamMembers,
     bookings,
@@ -64,6 +66,7 @@ export const App: React.FC = () => {
             }
           />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
         <Modal
@@ -76,5 +79,16 @@ export const App: React.FC = () => {
         </Modal>
       </AppContainer>
     </FeatureFlagsProvider>
+  );
+};
+
+export const App: React.FC = () => {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<RequireAuth />}>
+        <Route path="/*" element={<ProtectedApp />} />
+      </Route>
+    </Routes>
   );
 };
