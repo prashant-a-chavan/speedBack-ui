@@ -7,16 +7,22 @@ import { Table, TableBody, TableCell, TableRow, Typography } from '@mui/material
 interface DashboardProps {
   teamMembers: TeamMember[];
   bookings: Booking[];
-  currentBooker: number | null;
+  currentMemberId: number | null;
+  currentMemberName: string;
+  onBook: (slotNumber: number, bookieId: number) => Promise<void>;
   onRemove: (bookerId: number, slotNumber: number) => void;
+  getAvailableBookies: (currentSlot: number) => TeamMember[];
   slotConfig: SlotConfig;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
   teamMembers,
   bookings,
-  currentBooker,
+  currentMemberId,
+  currentMemberName,
+  onBook,
   onRemove,
+  getAvailableBookies,
   slotConfig,
 }) => {
   const slots = useMemo(() => {
@@ -43,8 +49,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
               key={member.id}
               member={member}
               bookings={bookings}
-              currentBooker={currentBooker}
+                currentMemberId={currentMemberId}
+                onBook={onBook}
               onRemove={onRemove}
+                getAvailableBookies={getAvailableBookies}
               slotConfig={slotConfig}
             />
           ))}
