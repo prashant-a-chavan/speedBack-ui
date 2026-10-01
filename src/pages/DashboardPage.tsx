@@ -1,5 +1,4 @@
 import React from 'react';
-import { BookingForm } from '../components/BookingForm';
 import { Dashboard } from '../components/Dashboard';
 import { TeamMember, Booking, SlotConfig } from '../types';
 import { Box } from '@mui/material';
@@ -7,19 +6,19 @@ import { Box } from '@mui/material';
 interface DashboardPageProps {
   teamMembers: TeamMember[];
   bookings: Booking[];
-  selectedBooker: number | null;
-  setSelectedBooker: (id: number | null) => void;
-  handleBooking: (bookingData: Omit<Booking, 'id' | 'bookerName' | 'bookieName'>) => Promise<void>;
+  currentMemberId: number | null;
+  currentMemberName: string;
+  handleBooking: (slotNumber: number, bookieId: number) => Promise<void>;
   handleRemoveBooking: (bookerId: number, slotNumber: number) => Promise<void>;
-  getAvailableBookies: (bookerId: number, currentSlot: number) => TeamMember[];
+  getAvailableBookies: (currentSlot: number) => TeamMember[];
   slotConfig: SlotConfig;
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
   teamMembers,
   bookings,
-  selectedBooker,
-  setSelectedBooker,
+  currentMemberId,
+  currentMemberName,
   handleBooking,
   handleRemoveBooking,
   getAvailableBookies,
@@ -32,21 +31,16 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
       overflow="hidden"
       p={3}
       gap={3}
-      sx={{ '@media (max-width: 1024px)': { flexDirection: 'column', p: 2, gap: 2 } }}
+      sx={{ '@media (max-width: 1024px)': { p: 2, gap: 2 } }}
     >
-      <BookingForm
-        teamMembers={teamMembers}
-        selectedBooker={selectedBooker}
-        setSelectedBooker={setSelectedBooker}
-        handleBooking={handleBooking}
-        getAvailableBookies={getAvailableBookies}
-        slotConfig={slotConfig}
-      />
       <Dashboard
         teamMembers={teamMembers}
         bookings={bookings}
-        currentBooker={selectedBooker}
+        currentMemberId={currentMemberId}
+        currentMemberName={currentMemberName}
+        onBook={handleBooking}
         onRemove={handleRemoveBooking}
+        getAvailableBookies={getAvailableBookies}
         slotConfig={slotConfig}
       />
     </Box>

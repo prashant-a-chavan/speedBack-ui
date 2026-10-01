@@ -16,8 +16,8 @@ const ProtectedApp: React.FC = () => {
   const {
     teamMembers,
     bookings,
-    selectedBooker,
-    setSelectedBooker,
+    currentMemberId,
+    currentMemberName,
     isModalOpen,
     setIsModalOpen,
     modalMessage,
@@ -56,8 +56,8 @@ const ProtectedApp: React.FC = () => {
               <DashboardPage
                 teamMembers={teamMembers}
                 bookings={bookings}
-                selectedBooker={selectedBooker}
-                setSelectedBooker={setSelectedBooker}
+                currentMemberId={currentMemberId}
+                currentMemberName={currentMemberName}
                 handleBooking={handleBooking}
                 handleRemoveBooking={handleRemoveBooking}
                 getAvailableBookies={getAvailableBookies}
