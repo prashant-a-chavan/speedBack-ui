@@ -68,8 +68,8 @@ describe('App routing', () => {
   const baseHookState = {
     teamMembers: [],
     bookings: [],
-    selectedBooker: null,
-    setSelectedBooker: jest.fn(),
+    currentMemberId: 1,
+    currentMemberName: 'Prashant',
     isModalOpen: true,
     setIsModalOpen: jest.fn(),
     handleBooking: jest.fn(),

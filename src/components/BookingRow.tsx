@@ -6,16 +6,20 @@ import { TableCellContent } from './BookingCell.tsx';
 interface BookingRowProps {
   member: TeamMember;
   bookings: Booking[];
-  currentBooker: number | null;
+  currentMemberId: number | null;
+  onBook: (slotNumber: number, bookieId: number) => Promise<void>;
   onRemove: (bookerId: number, slotNumber: number) => void;
+  getAvailableBookies: (currentSlot: number) => TeamMember[];
   slotConfig: SlotConfig;
 }
 
 export const BookingRow: React.FC<BookingRowProps> = ({
   member,
   bookings,
-  currentBooker,
+  currentMemberId,
+  onBook,
   onRemove,
+  getAvailableBookies,
   slotConfig,
 }) => {
   const slots = useMemo(() => {
@@ -29,11 +33,11 @@ export const BookingRow: React.FC<BookingRowProps> = ({
     return { bookingAsBooker, bookingAsBookie };
   };
 
-  const canCancelBooking = currentBooker === member.id;
+  const isCurrentMemberRow = currentMemberId === member.id;
 
   return (
-    <TableRow hover>
-      <TableCellContent variant="member" member={member} />
+    <TableRow hover={isCurrentMemberRow}>
+      <TableCellContent variant="member" member={member} isCurrentMember={isCurrentMemberRow} />
 
       {slots.map((slot) => {
         const { bookingAsBooker, bookingAsBookie } = getBookingForSlot(slot);
@@ -45,7 +49,10 @@ export const BookingRow: React.FC<BookingRowProps> = ({
             slot={slot}
             bookingAsBooker={bookingAsBooker}
             bookingAsBookie={bookingAsBookie}
-            canCancel={canCancelBooking}
+            isCurrentMemberRow={isCurrentMemberRow}
+            availableBookies={isCurrentMemberRow ? getAvailableBookies(slot) : []}
+            onBook={onBook}
+            canCancel={isCurrentMemberRow}
             onCancel={onRemove}
           />
         );

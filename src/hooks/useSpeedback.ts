@@ -6,6 +6,7 @@ import {
   removeBooking,
 } from '../services/bookingService';
 import { getSlotConfiguration } from '../services/configService';
+import { useAuth } from '../context/AuthContext';
 import useWebSocket from './useWebSocket';
 import { TeamMember, Booking, SlotConfig } from '../types';
 
@@ -14,26 +15,27 @@ const WS_URL = process.env.REACT_APP_WS_URL || 'http://localhost:8080/ws';
 interface UseSpeedbackReturn {
   teamMembers: TeamMember[];
   bookings: Booking[];
-  selectedBooker: number | null;
-  setSelectedBooker: React.Dispatch<React.SetStateAction<number | null>>;
+  currentMemberId: number | null;
+  currentMemberName: string;
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   modalMessage: string;
-  handleBooking: (bookingData: Omit<Booking, 'id' | 'bookerName' | 'bookieName'>) => Promise<void>;
+  handleBooking: (slotNumber: number, bookieId: number) => Promise<void>;
   handleRemoveBooking: (bookerId: number, slotNumber: number) => Promise<void>;
-  getAvailableBookies: (bookerId: number, currentSlot: number) => TeamMember[];
+  getAvailableBookies: (currentSlot: number) => TeamMember[];
   slotConfig: SlotConfig;
 }
 
 export const useSpeedback = (): UseSpeedbackReturn => {
+  const { session } = useAuth();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [slotConfig, setSlotConfig] = useState<SlotConfig>({ count: 3, durationMinutes: 15 });
 
-  const [selectedBooker, setSelectedBooker] = useState<number | null>(null);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const currentMemberId = session?.memberId ?? null;
+  const currentMemberName = session?.name ?? '';
 
   const handleWebSocketMessage = useCallback((updatedBookings: Booking[]) => {
     setBookings(updatedBookings);
@@ -61,7 +63,19 @@ export const useSpeedback = (): UseSpeedbackReturn => {
     fetchData();
   }, []);
 
-  const handleBooking = async (bookingData: Omit<Booking, 'id' | 'bookerName' | 'bookieName'>) => {
+  const handleBooking = async (slotNumber: number, bookieId: number) => {
+    if (!currentMemberId) {
+      setModalMessage('Your session has expired. Please sign in again.');
+      setIsModalOpen(true);
+      return;
+    }
+
+    const bookingData = {
+      bookerId: currentMemberId,
+      bookieId,
+      slotNumber,
+    };
+
     const bookerAlreadyBooked = bookings.find(
       (b) => b.bookieId === bookingData.bookerId && b.slotNumber === bookingData.slotNumber
     );
@@ -103,31 +117,35 @@ export const useSpeedback = (): UseSpeedbackReturn => {
   };
 
   const getAvailableBookies = useCallback(
-    (bookerId: number, currentSlot: number): TeamMember[] => {
-      if (!bookerId) return [];
-      const bookedByBooker = bookings.filter((b) => b.bookerId === bookerId).map((b) => b.bookieId);
+    (currentSlot: number): TeamMember[] => {
+      if (!currentMemberId) return [];
+
+      const bookedByBooker = bookings
+        .filter((b) => b.bookerId === currentMemberId)
+        .map((b) => b.bookieId);
       const bookedBookiesInSlot = bookings
         .filter((b) => b.slotNumber === currentSlot)
         .map((b) => b.bookieId);
       const bookedBookersInSlot = bookings
         .filter((b) => b.slotNumber === currentSlot)
         .map((b) => b.bookerId);
+
       return teamMembers.filter(
         (member) =>
-          member.id !== bookerId &&
+          member.id !== currentMemberId &&
           !bookedByBooker.includes(member.id) &&
           !bookedBookiesInSlot.includes(member.id) &&
           !bookedBookersInSlot.includes(member.id)
       );
     },
-    [bookings, teamMembers]
+    [bookings, currentMemberId, teamMembers]
   );
 
   return {
     teamMembers,
     bookings,
-    selectedBooker,
-    setSelectedBooker,
+    currentMemberId,
+    currentMemberName,
     isModalOpen,
     setIsModalOpen,
     modalMessage,
