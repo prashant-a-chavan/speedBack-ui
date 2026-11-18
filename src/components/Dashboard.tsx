@@ -49,10 +49,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
               key={member.id}
               member={member}
               bookings={bookings}
-                currentMemberId={currentMemberId}
-                onBook={onBook}
+              currentMemberId={currentMemberId}
+              onBook={onBook}
               onRemove={onRemove}
-                getAvailableBookies={getAvailableBookies}
+              getAvailableBookies={getAvailableBookies}
               slotConfig={slotConfig}
             />
           ))}

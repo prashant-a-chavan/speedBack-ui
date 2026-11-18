@@ -111,12 +111,18 @@ export const TableCellContent: React.FC<TableCellContentProps> = (props) => {
 
     if (isCurrentMemberRow) {
       return (
-        <FormControl sx={{ width: '50%' }} size="small" disabled={isSubmitting || availableBookies.length === 0}>
+        <FormControl
+          sx={{ width: '50%' }}
+          size="small"
+          disabled={isSubmitting || availableBookies.length === 0}
+        >
           <Select
             value=""
             displayEmpty
             onChange={handleInlineBooking}
-            renderValue={() => (availableBookies.length === 0 ? 'No teammates available' : 'Book slot')}
+            renderValue={() =>
+              availableBookies.length === 0 ? 'No teammates available' : 'Book slot'
+            }
             sx={{
               minWidth: 150,
               backgroundColor: 'rgba(25, 118, 210, 0.04)',
